@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, BadRequestException, ParseIntPipe, Query, ParseUUIDPipe, NotFoundException } from '@nestjs/common';
+import { JoiValidationPipe } from './../common/pipes/validation.pipe';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, BadRequestException, ParseIntPipe, Query, ParseUUIDPipe, NotFoundException, UsePipes } from '@nestjs/common';
 import { CatsService } from './cats.service';
-import { CreateCatDto } from './dto/create-cat.dto';
+import { CreateCatDto, createCatSchema } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 
 @Controller('cats')
@@ -8,6 +9,7 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
+  @UsePipes(new JoiValidationPipe(createCatSchema))
   async create(@Body() createCatDto: CreateCatDto) {
     // throw new HttpException('asdfa', HttpStatus.FORBIDDEN);
 
@@ -34,7 +36,7 @@ export class CatsController {
   @Get(':id')
   async findOne(
     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) id: number,
-    // @Param('uuid', new ParseUUIDPipe({ version: '5' }))
+  //   // @Param('uuid', new ParseUUIDPipe({ version: '5' }))
   ) {
     try {
       return this.catsService.findOne(id);
@@ -50,6 +52,10 @@ export class CatsController {
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.catsService.remove(id);
+    try {
+      return await this.catsService.remove(id);
+    } catch (err) {
+      throw new NotFoundException(`Cat with id ${id} was not found`)
+    }
   }
 }

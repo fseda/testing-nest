@@ -7,7 +7,26 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class CatsService {
-  private readonly cats: Cat[] = []
+  private readonly cats: Cat[] = [
+    {
+      id: 1,
+      name: 'Pomarola',
+      age: 1,
+      breed: 'stray'
+    },
+    {
+      id: 2,
+      name: 'Martin',
+      age: 3,
+      breed: 'stray'
+    },
+    {
+      id: 3,
+      name: 'Felix',
+      age: 10,
+      breed: 'stray'
+    },
+  ]
 
   create(createCatDto: CreateCatDto) {
     const cat = {id: this.getLastId() + 1, ... _.cloneDeep(createCatDto)}
@@ -37,7 +56,12 @@ export class CatsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} cat`;
+    for (const cat of this.cats) {
+      if (cat.id === id) {
+        this.cats.splice(cat.id - 1, 1);
+        return cat;
+      }
+    }
   }
 
   private getLastId() {
