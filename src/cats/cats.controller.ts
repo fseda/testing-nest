@@ -1,5 +1,5 @@
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, ParseIntPipe, Patch, Post, UsePipes } from '@nestjs/common';
 import { JoiValidationPipe } from './../common/pipes/validation.pipe';
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, BadRequestException, ParseIntPipe, Query, ParseUUIDPipe, NotFoundException, UsePipes } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto, createCatSchema } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';

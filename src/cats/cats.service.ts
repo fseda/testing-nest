@@ -40,7 +40,7 @@ export class CatsService {
     return this.cats;
   }
 
-  findOne(id: number) {
+  findOne(id: number): Cat {
     // let cat: Cat;
     for (const cat of this.cats) {
       if (cat.id === id) {
