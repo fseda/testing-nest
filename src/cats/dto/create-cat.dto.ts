@@ -12,4 +12,8 @@ export class CreateCatDto {
   name: string;
   age: number;
   breed: string;
+
+  constructor() {
+    this.name
+  }
 }

@@ -14,13 +14,13 @@ export class UserService {
     return await this.prisma.user.findMany();
   }
 
-  async findOne(params: { where: Prisma.UserWhereUniqueInput }) {
-    const { where } = params;
-    const user = await this.prisma.user.findUniqueOrThrow({ where });
+  async findOne(params: { id: number }): Promise<User> {
+    const { id } = params;
+    const user = await this.prisma.user.findUniqueOrThrow({ where: { id } });
     
-    return this.prisma.user.update({
+    return await this.prisma.user.update({
       data: { profileViews: user.profileViews + 1 },
-      where
+      where: { id }
     })
   }
 
